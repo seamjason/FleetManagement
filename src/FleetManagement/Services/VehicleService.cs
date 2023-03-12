@@ -1,14 +1,15 @@
 ﻿using FleetManagement.Models;
 using FleetManagement.Models.Entities;
 using FleetManagement.Models.Enums;
-using AppContext = FleetManagement.Configuration.AppContext;
+using Microsoft.EntityFrameworkCore;
+using FleetManagementContext = FleetManagement.Configuration.FleetManagementContext;
 
 namespace FleetManagement.Services
 {
-    public class VehicleService
+    public class VehicleService : IVehicleService
     {
-        public readonly AppContext _context;
-        public VehicleService(AppContext context)
+        public readonly FleetManagementContext _context;
+        public VehicleService(FleetManagementContext context)
         {
             _context = context;
         }
@@ -104,7 +105,9 @@ namespace FleetManagement.Services
         {
             try
             {
-                var vehicle = _context.Vehicles.Where(v => v.Id == request.Id).FirstOrDefault();
+                var vehicle = _context.Vehicles
+                    .Include(v => v.Chassis)
+                    .Where(v => v.Id == request.Id).FirstOrDefault();
 
                 if (vehicle == null)
                 {
@@ -141,7 +144,9 @@ namespace FleetManagement.Services
         {
             try
             {
-                var vehicle = _context.Vehicles.Where(v => v.Chassis.ChassisId == chassisId).FirstOrDefault();
+                var vehicle = _context.Vehicles
+                    .Include(v => v.Chassis)
+                    .Where(v => v.Chassis.ChassisId == chassisId).FirstOrDefault();
 
                 if (vehicle == null)
                 {
@@ -173,6 +178,7 @@ namespace FleetManagement.Services
         public List<VehicleResponse> GetVehicles()
         {
             var vehicles = _context.Vehicles
+                .Include(v => v.Chassis)
                 .Select(v => new VehicleResponse
                 {
                     Id = v.Id,

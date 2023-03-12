@@ -1,0 +1,40 @@
+﻿body
+{
+}
+
+#header {
+    font-size: 24pt;
+    color: #2020aa;
+    font-weight: bold;
+    padding: 10px 10px;
+    border-bottom: 1px solid #444;
+}
+
+#listContent {
+    padding: 10px 10px;
+}
+
+.dialog-label {
+    font-weight: bold;
+    padding-right:8px;
+}
+
+.delete-row {
+    color:#808080;
+    text-decoration: none;
+}
+
+.button-row {
+    padding: 10px 10px;
+}
+
+.placeholder-option {
+    color:#808080;
+}
+
+.form-row {
+}
+
+.spacer {
+
+}

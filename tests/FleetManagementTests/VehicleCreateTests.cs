@@ -2,19 +2,20 @@ using FleetManagement.Models;
 using FleetManagement.Models.Entities;
 using FleetManagement.Models.Enums;
 using FleetManagement.Services;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using Moq.EntityFrameworkCore;
-using AppContext = FleetManagement.Configuration.AppContext;
+using FleetManagementContext = FleetManagement.Configuration.FleetManagementContext;
 
 namespace FleetManagementTests
 {
     public class VehicleCreateTests
     {
-        private readonly Mock<AppContext> _context;
+        private readonly Mock<FleetManagementContext> _context;
 
         public VehicleCreateTests()
         {
-            _context = new Mock<AppContext>("");
+            _context = new Mock<FleetManagementContext>(new DbContextOptions<FleetManagementContext>());
         }
 
         [Fact]

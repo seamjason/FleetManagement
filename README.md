@@ -39,4 +39,3 @@ https://dotnet.microsoft.com/en-us/download/visual-studio-sdks
 
 This project is configured for Sqlite, for local development/testing only.  In a production environment, I would recommend using Azure SQL Server.  The API can easily be published to an Azure application container.
 
-

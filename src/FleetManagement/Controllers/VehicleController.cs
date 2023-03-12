@@ -1,8 +1,9 @@
 using FleetManagement.Configuration;
 using FleetManagement.Models;
 using FleetManagement.Services;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using AppContext = FleetManagement.Configuration.AppContext;
+using FleetManagementContext = FleetManagement.Configuration.FleetManagementContext;
 
 namespace FleetManagement.Controllers
 {
@@ -11,12 +12,15 @@ namespace FleetManagement.Controllers
     public class VehicleController : ControllerBase
     {
         private readonly ILogger<VehicleController> _logger;
-        private AppContext _context;
-        private DbSettings _dbSettings;
+        //private FleetManagementContext _context;
+        //private DbSettings _dbSettings;
+        private IVehicleService _service;
 
-        public VehicleController(ILogger<VehicleController> logger)
+        public VehicleController(ILogger<VehicleController> logger, FleetManagementContext context, IVehicleService service)
         {
             _logger = logger;
+            //_context = context;
+            _service = service;
         }
 
         [HttpPost("create")]
@@ -41,12 +45,13 @@ namespace FleetManagement.Controllers
         }
 
         [HttpGet("get")]
-        public VehicleResponse GetVehicle([FromRoute] string chassisId)
+        public VehicleResponse GetVehicle(string chassisId)
         {
             var vehicleService = GetVehicleService();
             return vehicleService.GetVehicleByChassisId(chassisId);
         }
 
+        [EnableCors]
         [HttpGet("getall")]
         public List<VehicleResponse> GetVehicles()
         {
@@ -61,25 +66,27 @@ namespace FleetManagement.Controllers
             return vehicleService.GetVehicleTypes();
         }
 
-        protected VehicleService GetVehicleService()
+        protected IVehicleService GetVehicleService()
         {
-            if (_context == null)
-            {
-                if (_dbSettings == null)
-                {
-                    // TODO: Pull connection string from appSettings on Startup
+            return _service;
+            //if (_context == null)
+            //{
 
-                    var connectionString = "Server=tcp:azusql1.database.windows.net,1433;Initial Catalog=LockingMechanism;Persist Security Info=False;User ID=seamadmin;Password=8eXhjJBxBEK8BGz40nkG;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            //    if (_dbSettings == null)
+            //    {
+            //        // TODO: Pull connection string from appSettings on Startup
 
-                    _dbSettings = new DbSettings
-                    {
-                        DbConnectionString = connectionString
-                    };
-                }
-                _context = new AppContext(_dbSettings.DbConnectionString);
-            }
+            //        var connectionString = "Server=tcp:azusql1.database.windows.net,1433;Initial Catalog=LockingMechanism;Persist Security Info=False;User ID=seamadmin;Password=8eXhjJBxBEK8BGz40nkG;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
-            return new VehicleService(_context);
+            //        _dbSettings = new DbSettings
+            //        {
+            //            DbConnectionString = connectionString
+            //        };
+            //    }
+            //    _context = new FleetManagementContext(_dbSettings.DbConnectionString);
+            //}
+
+            //return new VehicleService(_context);
         }
     }
 }
