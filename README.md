@@ -31,7 +31,7 @@ https://dotnet.microsoft.com/en-us/download/visual-studio-sdks
 
 ## Running the application
 
-* Start the API by clicking the `> https` button on the toolbar.  This should open a browser and display the Swagger docs for the API.
+* Start the API by clicking the `> https` button on the toolbar.  This should open a browser and display the Swagger docs for the API.  Note that Visual Studio will likely prompt you to trust and install the self-signed certificate.
 
 * Open the `UI/index.html` file in a browser, from the local file system.  This contains only client-side code, so no server is necessary.
 
